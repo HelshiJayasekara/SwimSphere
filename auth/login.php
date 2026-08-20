@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Please enter both email and password.";
     } else {
         // 3. Database Lookup using prepared statements
-        $stmt = $pdo->prepare("SELECT id, username, password, role FROM user WHERE email = :email");
+        // 3. Database Lookup using prepared statements
+        $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM user WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
@@ -31,10 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Store user data in session
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
 
-            // Redirect securely to the homepage
-            header("Location: /index.php");
+            // Redirect securely to the dashboard
+            header("Location: /dashboard.php");
             exit;
         } else {
             // Generic error message to prevent email enumeration

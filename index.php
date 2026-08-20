@@ -1,4 +1,7 @@
-<?php require_once 'includes/header.php'; ?>
+<?php 
+require_once 'config/database.php';
+require_once 'includes/header.php'; 
+?>
 
 <main>
     <!-- HERO SECTION -->
@@ -62,68 +65,41 @@
 
             <div class="articles-grid">
                 <?php
-                $articles = [
-                    [
-                        'title' => '5 Essential Freestyle Swimming Techniques',
-                        'category' => 'Freestyle',
-                        'excerpt' => 'Learn the core principles of freestyle swimming to improve your speed and efficiency in the water.',
-                        'author' => 'Sarah Connor',
-                        'date' => 'Oct 12, 2026'
-                    ],
-                    [
-                        'title' => 'How to Improve Your Swimming Endurance',
-                        'category' => 'Training',
-                        'excerpt' => 'Discover the best workouts and breathing techniques to swim longer distances without getting tired.',
-                        'author' => 'Mike Phelps',
-                        'date' => 'Oct 10, 2026'
-                    ],
-                    [
-                        'title' => 'A Beginner\'s Guide to Breaststroke',
-                        'category' => 'Breaststroke',
-                        'excerpt' => 'Break down the complex movements of breaststroke into simple, actionable steps for beginners.',
-                        'author' => 'Emma Splash',
-                        'date' => 'Oct 08, 2026'
-                    ],
-                    [
-                        'title' => 'Common Swimming Mistakes Beginners Make',
-                        'category' => 'Techniques',
-                        'excerpt' => 'Avoid these common pitfalls to fast-track your swimming progress and prevent injuries.',
-                        'author' => 'John Ocean',
-                        'date' => 'Oct 05, 2026'
-                    ],
-                    [
-                        'title' => 'Essential Swimming Safety Rules',
-                        'category' => 'Safety',
-                        'excerpt' => 'Whether you are in a pool or open water, these safety rules are non-negotiable for every swimmer.',
-                        'author' => 'Sarah Connor',
-                        'date' => 'Oct 02, 2026'
-                    ],
-                    [
-                        'title' => 'Choosing the Right Swimming Equipment',
-                        'category' => 'Equipment',
-                        'excerpt' => 'From goggles to fins, find out what gear you actually need and what you can skip.',
-                        'author' => 'Mike Phelps',
-                        'date' => 'Sep 30, 2026'
-                    ]
-                ];
-
-                foreach ($articles as $article) {
-                    echo "
-                    <article class='article-card'>
-                        <div class='article-image'>
-                            <img src='/assets/images/placeholder.svg' alt='{$article['title']} placeholder'>
-                            <span class='article-badge'>{$article['category']}</span>
-                        </div>
-                        <div class='article-content'>
-                            <h3 class='article-title'>{$article['title']}</h3>
-                            <p class='article-excerpt'>{$article['excerpt']}</p>
-                            <div class='article-meta'>
-                                <span class='article-author'>👤 {$article['author']}</span>
-                                <span class='article-date'>📅 {$article['date']}</span>
-                            </div>
-                            <a href='#' class='btn btn-outline btn-block'>Read More</a>
-                        </div>
-                    </article>";
+                // Fetch dynamic articles from database
+                try {
+                    $stmt = $pdo->query("SELECT b.id, b.title, b.content, b.created_at, u.username as author FROM blogPost b JOIN user u ON b.user_id = u.id ORDER BY b.created_at DESC");
+                    $articles = $stmt->fetchAll();
+                    
+                    if (empty($articles)) {
+                        echo "<p style='grid-column: 1 / -1; text-align: center; color: var(--clr-text-light);'>No articles have been published yet.</p>";
+                    } else {
+                        foreach ($articles as $article) {
+                            $excerpt = strip_tags($article['content']);
+                            $excerpt = mb_strlen($excerpt) > 100 ? htmlspecialchars(mb_substr($excerpt, 0, 100)) . '...' : htmlspecialchars($excerpt);
+                            $title = htmlspecialchars($article['title']);
+                            $author = htmlspecialchars($article['author']);
+                            $date = date('M j, Y', strtotime($article['created_at']));
+                            $id = $article['id'];
+                            
+                            echo "
+                            <article class='article-card'>
+                                <div class='article-image'>
+                                    <img src='/assets/images/placeholder.svg' alt='{$title} placeholder'>
+                                </div>
+                                <div class='article-content'>
+                                    <h3 class='article-title'>{$title}</h3>
+                                    <p class='article-excerpt'>{$excerpt}</p>
+                                    <div class='article-meta'>
+                                        <span class='article-author'>👤 {$author}</span>
+                                        <span class='article-date'>📅 {$date}</span>
+                                    </div>
+                                    <a href='/article.php?id={$id}' class='btn btn-outline btn-block'>Read More</a>
+                                </div>
+                            </article>";
+                        }
+                    }
+                } catch (PDOException $e) {
+                    echo "<p style='grid-column: 1 / -1; text-align: center; color: #dc3545;'>Error loading articles.</p>";
                 }
                 ?>
             </div>
