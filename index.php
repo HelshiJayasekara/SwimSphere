@@ -103,33 +103,33 @@ require_once 'includes/header.php';
                             
                             // Buttons HTML
                             $like_btn_class = $has_liked ? 'btn-primary' : 'btn-outline';
-                            $like_btn_text = $has_liked ? '❤️ Liked' : '🤍 Like';
                             $like_html = "";
                             if ($is_logged_in) {
                                 $action = $has_liked ? 'unlike' : 'like';
+                                $title_attr = $has_liked ? 'Unlike' : 'Like';
                                 $like_html = "<form action='/like_handler.php' method='POST' style='margin: 0; display: inline-block;'>
                                     <input type='hidden' name='post_id' value='{$id}'>
                                     <input type='hidden' name='action' value='{$action}'>
                                     <input type='hidden' name='redirect_to' value='/index.php#articles'>
-                                    <button type='submit' class='btn {$like_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;'>{$like_btn_text} &middot; {$like_count}</button>
+                                    <button type='submit' class='btn {$like_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;' title='{$title_attr}' aria-label='{$title_attr}'>❤️ {$like_count}</button>
                                 </form>";
                             } else {
-                                $like_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to like'>🤍 Like &middot; {$like_count}</a>";
+                                $like_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to like' aria-label='Log in to like'>❤️ {$like_count}</a>";
                             }
                             
                             $bookmark_btn_class = $has_bookmarked ? 'btn-secondary' : 'btn-outline';
-                            $bookmark_btn_text = $has_bookmarked ? '🔖 Saved' : '🔖 Save';
                             $bookmark_html = "";
                             if ($is_logged_in) {
                                 $action = $has_bookmarked ? 'remove' : 'add';
+                                $title_attr = $has_bookmarked ? 'Remove Bookmark' : 'Bookmark';
                                 $bookmark_html = "<form action='/bookmark_handler.php' method='POST' style='margin: 0; display: inline-block;'>
                                     <input type='hidden' name='post_id' value='{$id}'>
                                     <input type='hidden' name='action' value='{$action}'>
                                     <input type='hidden' name='redirect_to' value='/index.php#articles'>
-                                    <button type='submit' class='btn {$bookmark_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;'>{$bookmark_btn_text}</button>
+                                    <button type='submit' class='btn {$bookmark_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;' title='{$title_attr}' aria-label='{$title_attr}'>🔖</button>
                                 </form>";
                             } else {
-                                $bookmark_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to bookmark'>🔖 Save</a>";
+                                $bookmark_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to bookmark' aria-label='Log in to bookmark'>🔖</a>";
                             }
 
                             echo "

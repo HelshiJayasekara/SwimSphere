@@ -119,12 +119,13 @@ require_once 'includes/header.php';
                                 <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
                                 <input type="hidden" name="action" value="<?php echo $has_liked ? 'unlike' : 'like'; ?>">
                                 <input type="hidden" name="redirect_to" value="/article.php?id=<?php echo $post_id; ?>">
-                                <button type="submit" class="btn <?php echo $has_liked ? 'btn-primary' : 'btn-outline'; ?>" style="padding: 8px 16px;">
-                                    <?php echo $has_liked ? '❤️ Liked' : '🤍 Like'; ?> &middot; <?php echo $like_count; ?>
+                                <?php $title_attr = $has_liked ? 'Unlike' : 'Like'; ?>
+                                <button type="submit" class="btn <?php echo $has_liked ? 'btn-primary' : 'btn-outline'; ?>" style="padding: 8px 16px;" title="<?php echo $title_attr; ?>" aria-label="<?php echo $title_attr; ?>">
+                                    ❤️ <?php echo $like_count; ?>
                                 </button>
                             </form>
                         <?php else: ?>
-                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to like">🤍 Like &middot; <?php echo $like_count; ?></a>
+                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to like" aria-label="Log in to like">❤️ <?php echo $like_count; ?></a>
                         <?php endif; ?>
                     </div>
 
@@ -135,12 +136,13 @@ require_once 'includes/header.php';
                                 <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
                                 <input type="hidden" name="action" value="<?php echo $has_bookmarked ? 'remove' : 'add'; ?>">
                                 <input type="hidden" name="redirect_to" value="/article.php?id=<?php echo $post_id; ?>">
-                                <button type="submit" class="btn <?php echo $has_bookmarked ? 'btn-secondary' : 'btn-outline'; ?>" style="padding: 8px 16px;">
-                                    <?php echo $has_bookmarked ? '🔖 Saved' : '🔖 Save'; ?>
+                                <?php $title_attr = $has_bookmarked ? 'Remove Bookmark' : 'Bookmark'; ?>
+                                <button type="submit" class="btn <?php echo $has_bookmarked ? 'btn-secondary' : 'btn-outline'; ?>" style="padding: 8px 16px;" title="<?php echo $title_attr; ?>" aria-label="<?php echo $title_attr; ?>">
+                                    🔖
                                 </button>
                             </form>
                         <?php else: ?>
-                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to bookmark">🔖 Save</a>
+                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to bookmark" aria-label="Log in to bookmark">🔖</a>
                         <?php endif; ?>
                     </div>
                     

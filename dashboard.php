@@ -264,12 +264,12 @@ require_once 'includes/header.php';
                                         </div>
 
                                         <div class="post-actions" style="display: flex; gap: 10px; align-items: center;">
-                                            <a href="/article.php?id=<?php echo $bkmk['post_id']; ?>" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem;">Read Article</a>
+                                            <a href="/article.php?id=<?php echo $bkmk['post_id']; ?>" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem;">Read</a>
                                             <form action="/bookmark_handler.php" method="POST" style="margin: 0;">
                                                 <input type="hidden" name="post_id" value="<?php echo $bkmk['post_id']; ?>">
                                                 <input type="hidden" name="action" value="remove">
                                                 <input type="hidden" name="redirect_to" value="/dashboard.php">
-                                                <button type="submit" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem; color: #dc3545; border-color: #dc3545; background: transparent; cursor: pointer;" onmouseover="this.style.backgroundColor='#dc3545'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#dc3545';">Remove</button>
+                                                <button type="submit" class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.85rem; cursor: pointer;" title="Remove Bookmark" aria-label="Remove Bookmark">🔖</button>
                                             </form>
                                         </div>
                                         
@@ -311,7 +311,7 @@ require_once 'includes/header.php';
                                                 <input type="hidden" name="post_id" value="<?php echo $liked['post_id']; ?>">
                                                 <input type="hidden" name="action" value="unlike">
                                                 <input type="hidden" name="redirect_to" value="/dashboard.php#liked">
-                                                <button type="submit" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem; color: #dc3545; border-color: #dc3545; background: transparent; cursor: pointer;" onmouseover="this.style.backgroundColor='#dc3545'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#dc3545';">Unlike</button>
+                                                <button type="submit" class="btn btn-primary" style="padding: 4px 12px; font-size: 0.85rem; cursor: pointer;" title="Unlike" aria-label="Unlike">❤️ <?php echo $liked['like_count']; ?></button>
                                             </form>
                                         </div>
                                         
