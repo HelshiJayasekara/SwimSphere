@@ -51,8 +51,7 @@ require_once '../includes/header.php';
 
 <main class="auth-page section-padding bg-light">
     <div class="container">
-        <!-- We use inline styles here to match the exact design language of register.php -->
-        <div class="auth-card" style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+        <div class="auth-card" style="max-width: 500px; margin: 0 auto; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
             
             <div class="section-header" style="margin-bottom: 30px;">
                 <h2 style="font-size: 2rem;">Welcome Back</h2>
@@ -70,13 +69,13 @@ require_once '../includes/header.php';
             <form action="/auth/login.php" method="POST" class="auth-form">
                 
                 <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="email" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-navy);">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;" value="<?php echo htmlspecialchars($email); ?>" required>
+                    <label for="email" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-white);">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" style="width: 100%; padding: 12px; border-radius: 5px; font-family: inherit;" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 30px;">
-                    <label for="password" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-navy);">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;" required>
+                    <label for="password" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-white);">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" style="width: 100%; padding: 12px; border-radius: 5px; font-family: inherit;" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block btn-large">Log In</button>

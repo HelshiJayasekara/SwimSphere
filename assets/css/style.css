@@ -2,25 +2,36 @@
    CSS Variables & Theme
    ========================================================================== */
 :root {
-    /* Color Palette */
-    --clr-navy: #0a192f;
-    --clr-ocean: #023e8a;
-    --clr-aqua: #00b4d8;
-    --clr-light-cyan: #caf0f8;
-    --clr-white: #ffffff;
-    --clr-text: #333333;
-    --clr-text-light: #666666;
-    --clr-bg: #f8f9fa;
+    /* Color Palette - Dark Premium */
+    --clr-navy: #071A28; /* bg-primary */
+    --clr-ocean: #0B2435; /* bg-secondary */
+    --clr-aqua: #00C2E8; /* cyan */
+    --clr-light-cyan: #19D3F3; /* bright cyan */
+    --clr-gold: #C9A96E;
+    --clr-white: #F5F7FA; /* text-primary */
+    --clr-text: #F5F7FA; /* text-primary */
+    --clr-text-light: #A8BBCB; /* text-secondary */
+    --clr-text-muted: #71879A; /* text-muted */
+    --clr-bg: #071A28; /* bg-primary */
+    --clr-bg-alt: #0B2435; /* bg-secondary */
+    --clr-card: #0B2435; /* bg-card */
+    --clr-card-elevated: #071A28; /* bg-card-hover / elevated */
+    --clr-border: rgba(0,194,232,0.65); /* border */
+    
+    /* Glows */
+    --cyan-glow: rgba(8, 196, 233, 0.35);
+    --blue-glow: rgba(5, 123, 209, 0.30);
     
     /* Typography */
     --font-main: 'Poppins', sans-serif;
+    --font-heading: 'Poppins', sans-serif;
     
     /* Layout */
     --container-width: 1200px;
     --transition: all 0.3s ease;
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 5px 20px rgba(2, 62, 138, 0.1);
-    --shadow-lg: 0 10px 30px rgba(2, 62, 138, 0.15);
+    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 24px;
@@ -512,7 +523,7 @@ img {
 
 .about-content h2 {
     font-size: 2.5rem;
-    color: var(--clr-navy);
+    color: var(--clr-white);
     margin-bottom: 20px;
 }
 
@@ -540,13 +551,37 @@ img {
 }
 
 .stat-label {
-    color: var(--clr-navy);
+    color: var(--clr-white);
     font-weight: 500;
+}
+
+.about-image-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.about-image-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -20px;
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--clr-light-cyan);
+    border-radius: var(--radius-lg);
+    z-index: -1;
 }
 
 .about-image {
     border-radius: var(--radius-lg);
-    box-shadow: -20px 20px 0 var(--clr-light-cyan);
+    width: 100%;
+    display: block;
+    transition: var(--transition);
+}
+
+.about-image-wrapper:hover .about-image {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-md);
 }
 
 /* ==========================================================================
@@ -730,4 +765,132 @@ img {
     .section-padding {
         padding: 50px 0;
     }
+}
+
+/* Base heading overrides */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--clr-white);
+}
+
+.site-header {
+    background-color: rgba(7, 26, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: none;
+}
+
+.logo, .nav-link, .auth-buttons span {
+    color: var(--clr-white) !important;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--clr-aqua) !important;
+    text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);
+}
+
+.nav-link.active {
+    border-bottom: 2px solid var(--clr-aqua);
+    padding-bottom: 4px;
+}
+
+.bg-light {
+    background-color: var(--clr-bg-alt);
+}
+
+.category-card, .article-card {
+    background-color: var(--clr-card);
+    border: 1px solid var(--clr-border);
+}
+
+.category-card h3, .article-title, .section-header h2 {
+    color: var(--clr-white);
+}
+
+/* Button overrides for dark theme */
+.btn-primary {
+    background: linear-gradient(135deg, var(--clr-aqua), var(--clr-light-cyan));
+    color: #fff;
+    border: none;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--clr-light-cyan), var(--clr-aqua));
+    box-shadow: 0 0 15px rgba(22, 199, 232, 0.4);
+}
+.btn-outline {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--clr-white);
+}
+.btn-outline:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Auth Pages & Dashboard Cards */
+.auth-container, .dashboard-container {
+    background-color: var(--clr-card);
+}
+.auth-card, .dashboard-card {
+    background-color: var(--clr-card-elevated);
+    border: 1px solid var(--clr-border);
+}
+.form-control {
+    background-color: var(--clr-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--clr-white);
+}
+.form-control:focus {
+    border-color: var(--clr-aqua);
+    box-shadow: 0 0 0 2px rgba(22,199,232,0.2);
+    outline: none;
+}
+
+/* Dashboard & Auth Card text color overrides for Dark Theme */
+.dashboard-container h2,
+.dashboard-container h4,
+.dashboard-container div,
+.auth-card h2,
+.auth-card h4,
+.auth-card div,
+.auth-card label,
+.profile-section div,
+.activity-section div {
+    color: var(--clr-white) !important;
+}
+
+/* Fix article cards border color */
+.article-card, .post-card {
+    border-color: rgba(255,255,255,0.10) !important;
+}
+
+/* Post text content needs to be readable */
+.article-content p, .article-excerpt, .post-excerpt {
+    color: var(--clr-text-light) !important;
+}
+
+/* Like and Bookmark Styling */
+.btn-primary[title="Unlike"], 
+.btn-secondary[title="Remove Bookmark"],
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--clr-aqua);
+    color: var(--clr-aqua);
+    box-shadow: 0 0 10px rgba(22, 199, 232, 0.3);
+    text-shadow: 0 0 5px rgba(22, 199, 232, 0.5);
+}
+
+.btn-outline[title="Like"],
+.btn-outline[title="Bookmark"] {
+    opacity: 0.7;
+}
+.btn-outline[title="Like"]:hover,
+.btn-outline[title="Bookmark"]:hover {
+    opacity: 1;
+    background: transparent;
+    color: var(--clr-white);
+    border-color: var(--clr-white);
+}
+
+.btn-logout:hover {
+    background: var(--clr-aqua) !important;
+    color: var(--clr-navy) !important;
+    box-shadow: 0 0 10px var(--cyan-glow);
 }

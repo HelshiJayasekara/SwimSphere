@@ -92,8 +92,7 @@ require_once '../includes/header.php';
 
 <main class="auth-page section-padding bg-light">
     <div class="container">
-        <!-- We use inline styles here for simplicity and isolation of the auth card styling, though in a real-world scenario they'd go in style.css -->
-        <div class="auth-card" style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+        <div class="auth-card" style="max-width: 500px; margin: 0 auto; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
             
             <div class="section-header" style="margin-bottom: 30px;">
                 <h2 style="font-size: 2rem;">Join SwimSphere</h2>
@@ -123,24 +122,24 @@ require_once '../includes/header.php';
                 <form action="/auth/register.php" method="POST" class="auth-form">
                     
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="username" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-navy);">Username</label>
+                        <label for="username" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-white);">Username</label>
                         <!-- htmlspecialchars is critical here to prevent XSS attacks when preserving user input -->
-                        <input type="text" id="username" name="username" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;" value="<?php echo htmlspecialchars($username); ?>" required>
+                        <input type="text" id="username" name="username" class="form-control" style="width: 100%; padding: 12px; border-radius: 5px; font-family: inherit;" value="<?php echo htmlspecialchars($username); ?>" required>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="email" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-navy);">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;" value="<?php echo htmlspecialchars($email); ?>" required>
+                        <label for="email" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-white);">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" style="width: 100%; padding: 12px; border-radius: 5px; font-family: inherit;" value="<?php echo htmlspecialchars($email); ?>" required>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="password" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-navy);">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;" required>
+                        <label for="password" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-white);">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" style="width: 100%; padding: 12px; border-radius: 5px; font-family: inherit;" required>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 30px;">
-                        <label for="confirm_password" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-navy);">Confirm Password</label>
-                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;" required>
+                        <label for="confirm_password" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--clr-white);">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" style="width: 100%; padding: 12px; border-radius: 5px; font-family: inherit;" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block btn-large">Create Account</button>

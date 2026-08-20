@@ -100,7 +100,7 @@ require_once 'includes/header.php';
 <main class="edit-post-page section-padding bg-light">
     <div class="container">
         <!-- Reusing auth-card styling to maintain SwimSphere design -->
-        <div class="auth-card" style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+        <div class="auth-card" style="max-width: 800px; margin: 0 auto; background: var(--clr-card); padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
             
             <div class="section-header" style="margin-bottom: 30px; text-align: left;">
                 <h2 style="font-size: 2rem; color: var(--clr-navy);">Edit Post</h2>

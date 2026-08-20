@@ -96,7 +96,7 @@ require_once 'includes/header.php';
         <div class="dashboard-header" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 40px; gap: 20px;">
             <div>
                 <!-- Display a welcoming dashboard using session info -->
-                <h2 style="font-size: 2.2rem; color: var(--clr-navy); margin-bottom: 5px;">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
+                <h2 style="font-size: 2.2rem; color: var(--clr-white); margin-bottom: 5px;">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
                 <p style="color: var(--clr-text-light); font-size: 1.1rem;">Manage your SwimSphere profile and blog posts.</p>
             </div>
             
@@ -115,35 +115,35 @@ require_once 'includes/header.php';
             <aside class="dashboard-sidebar" style="display: flex; flex-direction: column; gap: 30px;">
                 
                 <!-- PROFILE SECTION -->
-                <div class="profile-section" style="background: white; border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm);">
-                    <h3 style="font-size: 1.3rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Profile</h3>
+                <div class="profile-section" style="background: var(--clr-card); border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm);">
+                    <h3 style="font-size: 1.3rem; color: var(--clr-white); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Profile</h3>
                     
                     <div style="margin-bottom: 15px;">
                         <span style="display: block; font-size: 0.9rem; color: var(--clr-text-light); margin-bottom: 5px;">Username</span>
-                        <div style="font-weight: 600; color: var(--clr-navy); font-size: 1.1rem;">@<?php echo htmlspecialchars($_SESSION['username']); ?></div>
+                        <div style="font-weight: 600; color: var(--clr-white); font-size: 1.1rem;">@<?php echo htmlspecialchars($_SESSION['username']); ?></div>
                     </div>
                     
                     <div style="margin-bottom: 15px;">
                         <span style="display: block; font-size: 0.9rem; color: var(--clr-text-light); margin-bottom: 5px;">Email Address</span>
-                        <div style="font-weight: 600; color: var(--clr-navy); font-size: 1.1rem; word-break: break-all;"><?php echo htmlspecialchars($user_email); ?></div>
+                        <div style="font-weight: 600; color: var(--clr-white); font-size: 1.1rem; word-break: break-all;"><?php echo htmlspecialchars($user_email); ?></div>
                     </div>
                     
                     <div>
                         <span style="display: block; font-size: 0.9rem; color: var(--clr-text-light); margin-bottom: 5px;">Account Role</span>
-                        <div style="display: inline-block; padding: 4px 10px; background: var(--clr-light-cyan); color: var(--clr-ocean); border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
+                        <div style="display: inline-block; padding: 4px 10px; background: var(--clr-light-cyan); color: var(--clr-white); border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
                             <?php echo htmlspecialchars($_SESSION['role'] ?? 'User'); ?>
                         </div>
                     </div>
                 </div>
 
                 <!-- RESOURCES SECTION -->
-                <div class="resources-section" style="background: white; border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm);">
-                    <h3 style="font-size: 1.3rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">Swimming Resources</h3>
+                <div class="resources-section" style="background: var(--clr-card); border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm);">
+                    <h3 style="font-size: 1.3rem; color: var(--clr-white); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">Swimming Resources</h3>
                     <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
-                        <li><a href="/#categories" style="display: flex; align-items: center; gap: 10px; font-weight: 500;">🏊‍♂️ Mastering the Freestyle</a></li>
-                        <li><a href="/#articles" style="display: flex; align-items: center; gap: 10px; font-weight: 500;">⏱️ 4-Week Endurance Plan</a></li>
-                        <li><a href="/#articles" style="display: flex; align-items: center; gap: 10px; font-weight: 500;">🥽 Best Goggles Reviews</a></li>
-                        <li><a href="/#articles" style="display: flex; align-items: center; gap: 10px; font-weight: 500;">🛡️ Open Water Safety</a></li>
+                        <li><a href="/#categories" style="display: flex; align-items: center; gap: 10px; font-weight: 500; color: var(--clr-white);">🏊‍♂️ Mastering the Freestyle</a></li>
+                        <li><a href="/#articles" style="display: flex; align-items: center; gap: 10px; font-weight: 500; color: var(--clr-white);">⏱️ 4-Week Endurance Plan</a></li>
+                        <li><a href="/#articles" style="display: flex; align-items: center; gap: 10px; font-weight: 500; color: var(--clr-white);">🥽 Best Goggles Reviews</a></li>
+                        <li><a href="/#articles" style="display: flex; align-items: center; gap: 10px; font-weight: 500; color: var(--clr-white);">🛡️ Open Water Safety</a></li>
                     </ul>
                 </div>
                 
@@ -153,12 +153,12 @@ require_once 'includes/header.php';
             <div class="dashboard-main" style="display: flex; flex-direction: column; gap: 30px;">
                 
                 <!-- USER ACTIVITY SECTION -->
-                <div class="activity-section" style="background: white; border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm);">
-                    <h3 style="font-size: 1.3rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">User Activity</h3>
+                <div class="activity-section" style="background: var(--clr-card); border-radius: var(--radius-md); padding: 30px; box-shadow: var(--shadow-sm);">
+                    <h3 style="font-size: 1.3rem; color: var(--clr-white); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">User Activity</h3>
                     
                     <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                         <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
-                            <div style="font-size: 2.5rem; color: var(--clr-navy); font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo count($posts); ?></div>
+                            <div style="font-size: 2.5rem; color: var(--clr-white); font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo count($posts); ?></div>
                             <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Total Posts</div>
                         </div>
                         <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
@@ -174,7 +174,7 @@ require_once 'includes/header.php';
                             <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Likes Given</div>
                         </div>
                         <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
-                            <div style="font-size: 2.5rem; color: var(--clr-ocean); font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo count($bookmarks); ?></div>
+                            <div style="font-size: 2.5rem; color: var(--clr-white); font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo count($bookmarks); ?></div>
                             <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Bookmarks</div>
                         </div>
                     </div>
@@ -182,12 +182,12 @@ require_once 'includes/header.php';
 
                 <!-- MY BLOG POSTS SECTION -->
                 <section class="user-posts">
-                    <h3 style="font-size: 1.5rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Blog Posts</h3>
+                    <h3 style="font-size: 1.5rem; color: var(--clr-white); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Blog Posts</h3>
                     
                     <?php if (empty($posts)): ?>
-                        <div class="no-posts-state" style="background: white; padding: 50px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        <div class="no-posts-state" style="background: var(--clr-card); padding: 50px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
                             <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.8;">📝</div>
-                            <h4 style="font-size: 1.3rem; color: var(--clr-navy); margin-bottom: 10px;">You haven't created any posts yet.</h4>
+                            <h4 style="font-size: 1.3rem; color: var(--clr-white); margin-bottom: 10px;">You haven't created any posts yet.</h4>
                             <p style="color: var(--clr-text-light); margin-bottom: 25px; max-width: 400px; margin-inline: auto;">
                                 Share your swimming techniques, training routines, or equipment reviews with the SwimSphere community!
                             </p>
@@ -198,11 +198,11 @@ require_once 'includes/header.php';
                         <!-- Display posts safely -->
                         <div class="posts-list" style="display: flex; flex-direction: column; gap: 20px;">
                             <?php foreach ($posts as $post): ?>
-                                <article class="post-card" style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid var(--clr-aqua);">
+                                <article class="post-card" style="background: var(--clr-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid var(--clr-aqua);">
                                     
                                     <div class="post-content" style="padding: 20px 25px;">
                                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                                            <h4 style="font-size: 1.25rem; color: var(--clr-navy); line-height: 1.3; margin: 0;">
+                                            <h4 style="font-size: 1.25rem; color: var(--clr-white); line-height: 1.3; margin: 0;">
                                                 <?php echo htmlspecialchars($post['title']); ?>
                                             </h4>
                                             <div class="post-meta" style="font-size: 0.8rem; color: var(--clr-text-light); font-weight: 500; white-space: nowrap; margin-left: 15px;">
@@ -240,22 +240,22 @@ require_once 'includes/header.php';
                 
                 <!-- MY BOOKMARKS SECTION -->
                 <section class="user-bookmarks">
-                    <h3 style="font-size: 1.5rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Bookmarks</h3>
+                    <h3 style="font-size: 1.5rem; color: var(--clr-white); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Bookmarks</h3>
                     
                     <?php if (empty($bookmarks)): ?>
-                        <div class="no-posts-state" style="background: white; padding: 40px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        <div class="no-posts-state" style="background: var(--clr-card); padding: 40px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
                             <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.8;">🔖</div>
-                            <h4 style="font-size: 1.2rem; color: var(--clr-navy); margin-bottom: 10px;">No bookmarked articles.</h4>
+                            <h4 style="font-size: 1.2rem; color: var(--clr-white); margin-bottom: 10px;">No bookmarked articles.</h4>
                             <p style="color: var(--clr-text-light); margin-bottom: 0;">Explore the home page and bookmark articles you want to read later.</p>
                         </div>
                     <?php else: ?>
                         <div class="posts-list" style="display: flex; flex-direction: column; gap: 15px;">
                             <?php foreach ($bookmarks as $bkmk): ?>
-                                <article class="post-card" style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid var(--clr-ocean);">
+                                <article class="post-card" style="background: var(--clr-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid var(--clr-ocean);">
                                     <div class="post-content" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                                         
                                         <div>
-                                            <h4 style="font-size: 1.1rem; color: var(--clr-navy); margin: 0 0 5px 0;">
+                                            <h4 style="font-size: 1.1rem; color: var(--clr-white); margin: 0 0 5px 0;">
                                                 <?php echo htmlspecialchars($bkmk['title']); ?>
                                             </h4>
                                             <div class="post-meta" style="font-size: 0.8rem; color: var(--clr-text-light); font-weight: 500;">
@@ -282,22 +282,22 @@ require_once 'includes/header.php';
                 
                 <!-- MY LIKED ARTICLES SECTION -->
                 <section class="user-liked" id="liked">
-                    <h3 style="font-size: 1.5rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Liked Articles</h3>
+                    <h3 style="font-size: 1.5rem; color: var(--clr-white); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Liked Articles</h3>
                     
                     <?php if (empty($liked_articles)): ?>
-                        <div class="no-posts-state" style="background: white; padding: 40px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        <div class="no-posts-state" style="background: var(--clr-card); padding: 40px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
                             <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.8;">❤️</div>
-                            <h4 style="font-size: 1.2rem; color: var(--clr-navy); margin-bottom: 10px;">No liked articles.</h4>
+                            <h4 style="font-size: 1.2rem; color: var(--clr-white); margin-bottom: 10px;">No liked articles.</h4>
                             <p style="color: var(--clr-text-light); margin-bottom: 0;">Explore the home page and like articles you enjoy.</p>
                         </div>
                     <?php else: ?>
                         <div class="posts-list" style="display: flex; flex-direction: column; gap: 15px;">
                             <?php foreach ($liked_articles as $liked): ?>
-                                <article class="post-card" style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid #e83e8c;">
+                                <article class="post-card" style="background: var(--clr-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid #e83e8c;">
                                     <div class="post-content" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                                         
                                         <div>
-                                            <h4 style="font-size: 1.1rem; color: var(--clr-navy); margin: 0 0 5px 0;">
+                                            <h4 style="font-size: 1.1rem; color: var(--clr-white); margin: 0 0 5px 0;">
                                                 <?php echo htmlspecialchars($liked['title']); ?>
                                             </h4>
                                             <div class="post-meta" style="font-size: 0.8rem; color: var(--clr-text-light); font-weight: 500;">

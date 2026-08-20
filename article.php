@@ -87,10 +87,11 @@ require_once 'includes/header.php';
     <div class="container">
         
         <!-- Reusing SwimSphere Design tokens for the article container -->
-        <article class="article-full" style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); max-width: 900px; margin: 0 auto;">
+        <article class="article-full" style="background: var(--clr-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); max-width: 900px; margin: 0 auto;">
             
             <div class="article-hero-image" style="width: 100%; height: 400px; background-color: var(--clr-ocean); display: flex; align-items: center; justify-content: center; position: relative;">
-                <img src="/assets/images/placeholder.svg" alt="Cover Image" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+                <?php $img_num = ($post_id % 3) + 1; ?>
+                <img src="/assets/images/swimming_<?php echo $img_num; ?>.png" alt="Cover Image" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
                 <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,25,47,0.95), transparent);"></div>
                 
                 <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 50px;">
@@ -157,8 +158,8 @@ require_once 'includes/header.php';
             </div>
 
             <!-- Comments Section -->
-            <div class="article-comments" style="padding: 40px 60px; background: white; border-top: 1px solid #eee;">
-                <h3 style="font-size: 1.8rem; color: var(--clr-navy); margin-bottom: 30px;">Comments (<?php echo count($comments); ?>)</h3>
+            <div class="article-comments" style="padding: 40px 60px; background: var(--clr-card); border-top: 1px solid rgba(255,255,255,0.10);">
+                <h3 style="font-size: 1.8rem; color: var(--clr-white); margin-bottom: 30px;">Comments (<?php echo count($comments); ?>)</h3>
 
                 <!-- Error/Success Messages -->
                 <?php if (isset($_SESSION['error_message'])): ?>
@@ -198,9 +199,9 @@ require_once 'includes/header.php';
                         <p style="color: var(--clr-text-light); font-style: italic;">No comments yet. Be the first to share your thoughts!</p>
                     <?php else: ?>
                         <?php foreach ($comments as $comment): ?>
-                            <div class="comment" id="comment-<?php echo $comment['id']; ?>" style="background: #fbfbfb; padding: 20px; border-radius: var(--radius-sm); border-left: 3px solid var(--clr-aqua);">
+                            <div class="comment" id="comment-<?php echo $comment['id']; ?>" style="background: var(--clr-bg-alt); padding: 20px; border-radius: var(--radius-sm); border-left: 3px solid var(--clr-aqua);">
                                 <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                    <span style="font-weight: 600; color: var(--clr-navy);">👤 <?php echo htmlspecialchars($comment['author']); ?></span>
+                                    <span style="font-weight: 600; color: var(--clr-white);">👤 <?php echo htmlspecialchars($comment['author']); ?></span>
                                     <span style="font-size: 0.85rem; color: var(--clr-text-light);"><?php echo date('M j, Y g:i A', strtotime($comment['created_at'])); ?></span>
                                 </div>
                                 

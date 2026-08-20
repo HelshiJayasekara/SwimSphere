@@ -73,7 +73,7 @@ require_once 'includes/header.php';
 <main class="create-post-page section-padding bg-light">
     <div class="container">
         <!-- Reusing the auth-card styling structure to maintain SwimSphere visual design consistency -->
-        <div class="auth-card" style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+        <div class="auth-card" style="max-width: 800px; margin: 0 auto; background: var(--clr-card); padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
             
             <div class="section-header" style="margin-bottom: 30px; text-align: left;">
                 <h2 style="font-size: 2rem; color: var(--clr-navy);">Create New Post</h2>
