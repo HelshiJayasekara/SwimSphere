@@ -67,7 +67,22 @@ require_once 'includes/header.php';
                 <?php
                 // Fetch dynamic articles from database
                 try {
-                    $stmt = $pdo->query("SELECT b.id, b.title, b.content, b.created_at, u.username as author FROM blogPost b JOIN user u ON b.user_id = u.id ORDER BY b.created_at DESC");
+                    $user_id_param = $_SESSION['user_id'] ?? 0;
+                    $stmt = $pdo->prepare("
+                        SELECT 
+                            b.id, 
+                            b.title, 
+                            b.content, 
+                            b.created_at, 
+                            u.username as author,
+                            (SELECT COUNT(*) FROM article_like WHERE blog_post_id = b.id) as like_count,
+                            (SELECT 1 FROM article_like WHERE blog_post_id = b.id AND user_id = :uid1 LIMIT 1) as has_liked,
+                            (SELECT 1 FROM bookmark WHERE blog_post_id = b.id AND user_id = :uid2 LIMIT 1) as has_bookmarked
+                        FROM blogPost b 
+                        JOIN user u ON b.user_id = u.id 
+                        ORDER BY b.created_at DESC
+                    ");
+                    $stmt->execute(['uid1' => $user_id_param, 'uid2' => $user_id_param]);
                     $articles = $stmt->fetchAll();
                     
                     if (empty($articles)) {
@@ -80,18 +95,58 @@ require_once 'includes/header.php';
                             $author = htmlspecialchars($article['author']);
                             $date = date('M j, Y', strtotime($article['created_at']));
                             $id = $article['id'];
+                            $like_count = $article['like_count'];
+                            $has_liked = (bool)$article['has_liked'];
+                            $has_bookmarked = (bool)$article['has_bookmarked'];
                             
+                            $is_logged_in = isset($_SESSION['user_id']);
+                            
+                            // Buttons HTML
+                            $like_btn_class = $has_liked ? 'btn-primary' : 'btn-outline';
+                            $like_btn_text = $has_liked ? '❤️ Liked' : '🤍 Like';
+                            $like_html = "";
+                            if ($is_logged_in) {
+                                $action = $has_liked ? 'unlike' : 'like';
+                                $like_html = "<form action='/like_handler.php' method='POST' style='margin: 0; display: inline-block;'>
+                                    <input type='hidden' name='post_id' value='{$id}'>
+                                    <input type='hidden' name='action' value='{$action}'>
+                                    <input type='hidden' name='redirect_to' value='/index.php#articles'>
+                                    <button type='submit' class='btn {$like_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;'>{$like_btn_text} &middot; {$like_count}</button>
+                                </form>";
+                            } else {
+                                $like_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to like'>🤍 Like &middot; {$like_count}</a>";
+                            }
+                            
+                            $bookmark_btn_class = $has_bookmarked ? 'btn-secondary' : 'btn-outline';
+                            $bookmark_btn_text = $has_bookmarked ? '🔖 Saved' : '🔖 Save';
+                            $bookmark_html = "";
+                            if ($is_logged_in) {
+                                $action = $has_bookmarked ? 'remove' : 'add';
+                                $bookmark_html = "<form action='/bookmark_handler.php' method='POST' style='margin: 0; display: inline-block;'>
+                                    <input type='hidden' name='post_id' value='{$id}'>
+                                    <input type='hidden' name='action' value='{$action}'>
+                                    <input type='hidden' name='redirect_to' value='/index.php#articles'>
+                                    <button type='submit' class='btn {$bookmark_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;'>{$bookmark_btn_text}</button>
+                                </form>";
+                            } else {
+                                $bookmark_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to bookmark'>🔖 Save</a>";
+                            }
+
                             echo "
                             <article class='article-card'>
                                 <div class='article-image'>
                                     <img src='/assets/images/placeholder.svg' alt='{$title} placeholder'>
                                 </div>
                                 <div class='article-content'>
-                                    <h3 class='article-title'>{$title}</h3>
-                                    <p class='article-excerpt'>{$excerpt}</p>
-                                    <div class='article-meta'>
+                                    <h3 class='article-title' style='margin-bottom: 10px;'>{$title}</h3>
+                                    <div class='article-meta' style='margin-bottom: 15px; font-size: 0.85rem;'>
                                         <span class='article-author'>👤 {$author}</span>
                                         <span class='article-date'>📅 {$date}</span>
+                                    </div>
+                                    <p class='article-excerpt'>{$excerpt}</p>
+                                    <div class='article-actions' style='display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;'>
+                                        {$like_html}
+                                        {$bookmark_html}
                                     </div>
                                     <a href='/article.php?id={$id}' class='btn btn-outline btn-block'>Read More</a>
                                 </div>

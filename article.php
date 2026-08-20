@@ -55,6 +55,26 @@ try {
     $comments = [];
 }
 
+// Fetch Like Count
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM article_like WHERE blog_post_id = :post_id");
+$stmt->execute(['post_id' => $post_id]);
+$like_count = $stmt->fetchColumn();
+
+$has_liked = false;
+$has_bookmarked = false;
+
+if (isset($_SESSION['user_id'])) {
+    // Check if liked
+    $stmt = $pdo->prepare("SELECT 1 FROM article_like WHERE blog_post_id = :post_id AND user_id = :user_id");
+    $stmt->execute(['post_id' => $post_id, 'user_id' => $_SESSION['user_id']]);
+    $has_liked = (bool)$stmt->fetchColumn();
+    
+    // Check if bookmarked
+    $stmt = $pdo->prepare("SELECT 1 FROM bookmark WHERE blog_post_id = :post_id AND user_id = :user_id");
+    $stmt->execute(['post_id' => $post_id, 'user_id' => $_SESSION['user_id']]);
+    $has_bookmarked = (bool)$stmt->fetchColumn();
+}
+
 require_once 'includes/header.php';
 ?>
 
@@ -87,7 +107,45 @@ require_once 'includes/header.php';
                 ?>
             </div>
             
-            <div class="article-footer" style="padding: 30px 60px; background: #fbfbfb; border-top: 1px solid #eee; text-align: center;">
+            <div class="article-footer" style="padding: 30px 60px; background: #fbfbfb; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                
+                <!-- Like & Bookmark Actions -->
+                <div class="article-actions" style="display: flex; gap: 15px; align-items: center;">
+                    
+                    <!-- Likes -->
+                    <div class="like-section" style="display: flex; align-items: center; gap: 10px;">
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <form action="/like_handler.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                                <input type="hidden" name="action" value="<?php echo $has_liked ? 'unlike' : 'like'; ?>">
+                                <input type="hidden" name="redirect_to" value="/article.php?id=<?php echo $post_id; ?>">
+                                <button type="submit" class="btn <?php echo $has_liked ? 'btn-primary' : 'btn-outline'; ?>" style="padding: 8px 16px;">
+                                    <?php echo $has_liked ? '❤️ Liked' : '🤍 Like'; ?> &middot; <?php echo $like_count; ?>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to like">🤍 Like &middot; <?php echo $like_count; ?></a>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Bookmarks -->
+                    <div class="bookmark-section">
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <form action="/bookmark_handler.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                                <input type="hidden" name="action" value="<?php echo $has_bookmarked ? 'remove' : 'add'; ?>">
+                                <input type="hidden" name="redirect_to" value="/article.php?id=<?php echo $post_id; ?>">
+                                <button type="submit" class="btn <?php echo $has_bookmarked ? 'btn-secondary' : 'btn-outline'; ?>" style="padding: 8px 16px;">
+                                    <?php echo $has_bookmarked ? '🔖 Saved' : '🔖 Save'; ?>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to bookmark">🔖 Save</a>
+                        <?php endif; ?>
+                    </div>
+                    
+                </div>
+
                 <a href="/index.php#articles" class="btn btn-outline" style="display: inline-block; font-size: 1.1rem;">← Back to All Articles</a>
             </div>
 

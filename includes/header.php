@@ -33,6 +33,10 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li><a href="/#articles" class="nav-link">Fitness</a></li>
                 <li><a href="/#articles" class="nav-link">Safety</a></li>
                 <li><a href="/#about" class="nav-link">About</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="/dashboard.php" class="nav-link">Dashboard</a></li>
+                    <li><a href="/dashboard.php#bookmarks" class="nav-link">Bookmarks</a></li>
+                <?php endif; ?>
             </ul>
             
             <div class="auth-buttons">

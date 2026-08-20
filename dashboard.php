@@ -30,6 +30,45 @@ $stmt = $pdo->prepare("SELECT id, title, content, created_at FROM blogPost WHERE
 $stmt->execute(['user_id' => $_SESSION['user_id']]);
 $posts = $stmt->fetchAll();
 
+// Fetch Total Comments Made
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM comment WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$total_comments = $stmt->fetchColumn();
+
+// Fetch Total Likes Received (on their posts)
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM article_like al JOIN blogPost bp ON al.blog_post_id = bp.id WHERE bp.user_id = :user_id");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$total_likes_received = $stmt->fetchColumn();
+
+// Fetch Bookmarks
+$stmt = $pdo->prepare("
+    SELECT b.id as bookmark_id, bp.id as post_id, bp.title, b.created_at as bookmarked_at 
+    FROM bookmark b 
+    JOIN blogPost bp ON b.blog_post_id = bp.id 
+    WHERE b.user_id = :user_id 
+    ORDER BY b.created_at DESC
+");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$bookmarks = $stmt->fetchAll();
+
+// Fetch Total Likes Given
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM article_like WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$total_likes_given = $stmt->fetchColumn();
+
+// Fetch Liked Articles
+$stmt = $pdo->prepare("
+    SELECT al.id as like_id, bp.id as post_id, bp.title, u.username as author, al.created_at as liked_at,
+           (SELECT COUNT(*) FROM article_like WHERE blog_post_id = bp.id) as like_count
+    FROM article_like al
+    JOIN blogPost bp ON al.blog_post_id = bp.id
+    JOIN user u ON bp.user_id = u.id
+    WHERE al.user_id = :user_id 
+    ORDER BY al.created_at DESC
+");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$liked_articles = $stmt->fetchAll();
+
 // Include the standard SwimSphere header
 require_once 'includes/header.php';
 ?>
@@ -123,12 +162,20 @@ require_once 'includes/header.php';
                             <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Total Posts</div>
                         </div>
                         <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
-                            <div style="font-size: 2.5rem; color: var(--clr-aqua); font-weight: 700; line-height: 1; margin-bottom: 5px;">0</div>
+                            <div style="font-size: 2.5rem; color: var(--clr-aqua); font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo $total_comments; ?></div>
                             <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Comments</div>
                         </div>
                         <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
-                            <div style="font-size: 2.5rem; color: var(--clr-ocean); font-weight: 700; line-height: 1; margin-bottom: 5px;">Active</div>
-                            <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Account Status</div>
+                            <div style="font-size: 2.5rem; color: #e83e8c; font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo $total_likes_received; ?></div>
+                            <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Likes Received</div>
+                        </div>
+                        <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
+                            <div style="font-size: 2.5rem; color: #fd7e14; font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo $total_likes_given; ?></div>
+                            <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Likes Given</div>
+                        </div>
+                        <div style="flex: 1; min-width: 150px; background: var(--clr-bg); padding: 20px; border-radius: var(--radius-sm); text-align: center; border: 1px solid #eee;">
+                            <div style="font-size: 2.5rem; color: var(--clr-ocean); font-weight: 700; line-height: 1; margin-bottom: 5px;"><?php echo count($bookmarks); ?></div>
+                            <div style="color: var(--clr-text-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">Bookmarks</div>
                         </div>
                     </div>
                 </div>
@@ -189,6 +236,90 @@ require_once 'includes/header.php';
                         </div>
                     <?php endif; ?>
                     
+                </section>
+                
+                <!-- MY BOOKMARKS SECTION -->
+                <section class="user-bookmarks">
+                    <h3 style="font-size: 1.5rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Bookmarks</h3>
+                    
+                    <?php if (empty($bookmarks)): ?>
+                        <div class="no-posts-state" style="background: white; padding: 40px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.8;">🔖</div>
+                            <h4 style="font-size: 1.2rem; color: var(--clr-navy); margin-bottom: 10px;">No bookmarked articles.</h4>
+                            <p style="color: var(--clr-text-light); margin-bottom: 0;">Explore the home page and bookmark articles you want to read later.</p>
+                        </div>
+                    <?php else: ?>
+                        <div class="posts-list" style="display: flex; flex-direction: column; gap: 15px;">
+                            <?php foreach ($bookmarks as $bkmk): ?>
+                                <article class="post-card" style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid var(--clr-ocean);">
+                                    <div class="post-content" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                                        
+                                        <div>
+                                            <h4 style="font-size: 1.1rem; color: var(--clr-navy); margin: 0 0 5px 0;">
+                                                <?php echo htmlspecialchars($bkmk['title']); ?>
+                                            </h4>
+                                            <div class="post-meta" style="font-size: 0.8rem; color: var(--clr-text-light); font-weight: 500;">
+                                                Bookmarked on <?php echo date('M j, Y', strtotime($bkmk['bookmarked_at'])); ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="post-actions" style="display: flex; gap: 10px; align-items: center;">
+                                            <a href="/article.php?id=<?php echo $bkmk['post_id']; ?>" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem;">Read Article</a>
+                                            <form action="/bookmark_handler.php" method="POST" style="margin: 0;">
+                                                <input type="hidden" name="post_id" value="<?php echo $bkmk['post_id']; ?>">
+                                                <input type="hidden" name="action" value="remove">
+                                                <input type="hidden" name="redirect_to" value="/dashboard.php">
+                                                <button type="submit" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem; color: #dc3545; border-color: #dc3545; background: transparent; cursor: pointer;" onmouseover="this.style.backgroundColor='#dc3545'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#dc3545';">Remove</button>
+                                            </form>
+                                        </div>
+                                        
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </section>
+                
+                <!-- MY LIKED ARTICLES SECTION -->
+                <section class="user-liked" id="liked">
+                    <h3 style="font-size: 1.5rem; color: var(--clr-ocean); margin-bottom: 20px; border-bottom: 2px solid var(--clr-aqua); padding-bottom: 10px; display: inline-block;">My Liked Articles</h3>
+                    
+                    <?php if (empty($liked_articles)): ?>
+                        <div class="no-posts-state" style="background: white; padding: 40px 20px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.8;">❤️</div>
+                            <h4 style="font-size: 1.2rem; color: var(--clr-navy); margin-bottom: 10px;">No liked articles.</h4>
+                            <p style="color: var(--clr-text-light); margin-bottom: 0;">Explore the home page and like articles you enjoy.</p>
+                        </div>
+                    <?php else: ?>
+                        <div class="posts-list" style="display: flex; flex-direction: column; gap: 15px;">
+                            <?php foreach ($liked_articles as $liked): ?>
+                                <article class="post-card" style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid #e83e8c;">
+                                    <div class="post-content" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                                        
+                                        <div>
+                                            <h4 style="font-size: 1.1rem; color: var(--clr-navy); margin: 0 0 5px 0;">
+                                                <?php echo htmlspecialchars($liked['title']); ?>
+                                            </h4>
+                                            <div class="post-meta" style="font-size: 0.8rem; color: var(--clr-text-light); font-weight: 500;">
+                                                👤 <?php echo htmlspecialchars($liked['author']); ?> &middot; Liked on <?php echo date('M j, Y', strtotime($liked['liked_at'])); ?> &middot; ❤️ <?php echo $liked['like_count']; ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="post-actions" style="display: flex; gap: 10px; align-items: center;">
+                                            <a href="/article.php?id=<?php echo $liked['post_id']; ?>" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem;">Read Article</a>
+                                            <form action="/like_handler.php" method="POST" style="margin: 0;">
+                                                <input type="hidden" name="post_id" value="<?php echo $liked['post_id']; ?>">
+                                                <input type="hidden" name="action" value="unlike">
+                                                <input type="hidden" name="redirect_to" value="/dashboard.php#liked">
+                                                <button type="submit" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.85rem; color: #dc3545; border-color: #dc3545; background: transparent; cursor: pointer;" onmouseover="this.style.backgroundColor='#dc3545'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#dc3545';">Unlike</button>
+                                            </form>
+                                        </div>
+                                        
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </section>
                 
             </div>
