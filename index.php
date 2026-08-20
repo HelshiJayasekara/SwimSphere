@@ -76,6 +76,7 @@ require_once 'includes/header.php';
                             b.created_at, 
                             u.username as author,
                             (SELECT COUNT(*) FROM article_like WHERE blog_post_id = b.id) as like_count,
+                            (SELECT COUNT(*) FROM bookmark WHERE blog_post_id = b.id) as bookmark_count,
                             (SELECT 1 FROM article_like WHERE blog_post_id = b.id AND user_id = :uid1 LIMIT 1) as has_liked,
                             (SELECT 1 FROM bookmark WHERE blog_post_id = b.id AND user_id = :uid2 LIMIT 1) as has_bookmarked
                         FROM blogPost b 
@@ -96,6 +97,7 @@ require_once 'includes/header.php';
                             $date = date('M j, Y', strtotime($article['created_at']));
                             $id = $article['id'];
                             $like_count = $article['like_count'];
+                            $bookmark_count = $article['bookmark_count'];
                             $has_liked = (bool)$article['has_liked'];
                             $has_bookmarked = (bool)$article['has_bookmarked'];
                             
@@ -126,10 +128,10 @@ require_once 'includes/header.php';
                                     <input type='hidden' name='post_id' value='{$id}'>
                                     <input type='hidden' name='action' value='{$action}'>
                                     <input type='hidden' name='redirect_to' value='/index.php#articles'>
-                                    <button type='submit' class='btn {$bookmark_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;' title='{$title_attr}' aria-label='{$title_attr}'>🔖</button>
+                                    <button type='submit' class='btn {$bookmark_btn_class}' style='padding: 6px 12px; font-size: 0.9rem;' title='{$title_attr}' aria-label='{$title_attr}'>🔖 {$bookmark_count}</button>
                                 </form>";
                             } else {
-                                $bookmark_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to bookmark' aria-label='Log in to bookmark'>🔖</a>";
+                                $bookmark_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to bookmark' aria-label='Log in to bookmark'>🔖 {$bookmark_count}</a>";
                             }
 
                             echo "

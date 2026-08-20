@@ -36,3 +36,29 @@ CREATE TABLE IF NOT EXISTS blogPost (
     -- ON DELETE CASCADE ensures that if a user is deleted, all their posts are automatically removed.
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ==========================================
+-- TABLE: article_like
+-- ==========================================
+CREATE TABLE IF NOT EXISTS article_like (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  blog_post_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_user_post_like (user_id, blog_post_id),
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+  FOREIGN KEY (blog_post_id) REFERENCES blogPost(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ==========================================
+-- TABLE: bookmark
+-- ==========================================
+CREATE TABLE IF NOT EXISTS bookmark (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  blog_post_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_user_post_bookmark (user_id, blog_post_id),
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+  FOREIGN KEY (blog_post_id) REFERENCES blogPost(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

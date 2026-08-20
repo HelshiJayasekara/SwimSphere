@@ -55,10 +55,15 @@ try {
     $comments = [];
 }
 
-// Fetch Like Count
-$stmt = $pdo->prepare("SELECT COUNT(*) FROM article_like WHERE blog_post_id = :post_id");
-$stmt->execute(['post_id' => $post_id]);
-$like_count = $stmt->fetchColumn();
+// Fetch Like and Bookmark Counts
+$stmt = $pdo->prepare("SELECT 
+    (SELECT COUNT(*) FROM article_like WHERE blog_post_id = :post_id) as like_count,
+    (SELECT COUNT(*) FROM bookmark WHERE blog_post_id = :post_id2) as bookmark_count
+");
+$stmt->execute(['post_id' => $post_id, 'post_id2' => $post_id]);
+$counts = $stmt->fetch();
+$like_count = $counts['like_count'];
+$bookmark_count = $counts['bookmark_count'];
 
 $has_liked = false;
 $has_bookmarked = false;
@@ -138,11 +143,11 @@ require_once 'includes/header.php';
                                 <input type="hidden" name="redirect_to" value="/article.php?id=<?php echo $post_id; ?>">
                                 <?php $title_attr = $has_bookmarked ? 'Remove Bookmark' : 'Bookmark'; ?>
                                 <button type="submit" class="btn <?php echo $has_bookmarked ? 'btn-secondary' : 'btn-outline'; ?>" style="padding: 8px 16px;" title="<?php echo $title_attr; ?>" aria-label="<?php echo $title_attr; ?>">
-                                    🔖
+                                    🔖 <?php echo $bookmark_count; ?>
                                 </button>
                             </form>
                         <?php else: ?>
-                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to bookmark" aria-label="Log in to bookmark">🔖</a>
+                            <a href="/auth/login.php" class="btn btn-outline" style="padding: 8px 16px;" title="Log in to bookmark" aria-label="Log in to bookmark">🔖 <?php echo $bookmark_count; ?></a>
                         <?php endif; ?>
                     </div>
                     
