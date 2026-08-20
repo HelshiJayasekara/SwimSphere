@@ -40,6 +40,21 @@ try {
 // Format the date beautifully
 $date = date('F j, Y', strtotime($article['created_at']));
 
+// Fetch comments for this post
+try {
+    $stmt = $pdo->prepare("
+        SELECT c.id, c.content, c.created_at, c.user_id, u.username as author 
+        FROM comment c 
+        JOIN user u ON c.user_id = u.id 
+        WHERE c.blog_post_id = :post_id
+        ORDER BY c.created_at DESC
+    ");
+    $stmt->execute(['post_id' => $post_id]);
+    $comments = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $comments = [];
+}
+
 require_once 'includes/header.php';
 ?>
 
@@ -74,6 +89,71 @@ require_once 'includes/header.php';
             
             <div class="article-footer" style="padding: 30px 60px; background: #fbfbfb; border-top: 1px solid #eee; text-align: center;">
                 <a href="/index.php#articles" class="btn btn-outline" style="display: inline-block; font-size: 1.1rem;">← Back to All Articles</a>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="article-comments" style="padding: 40px 60px; background: white; border-top: 1px solid #eee;">
+                <h3 style="font-size: 1.8rem; color: var(--clr-navy); margin-bottom: 30px;">Comments (<?php echo count($comments); ?>)</h3>
+
+                <!-- Error/Success Messages -->
+                <?php if (isset($_SESSION['error_message'])): ?>
+                    <div class="alert alert-danger" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #f5c6cb;">
+                        <p style="margin: 0; font-weight: 500;">⚠️ <?php echo htmlspecialchars($_SESSION['error_message']); ?></p>
+                    </div>
+                    <?php unset($_SESSION['error_message']); ?>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['success_message'])): ?>
+                    <div class="alert alert-success" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #c3e6cb;">
+                        <p style="margin: 0; font-weight: 500;">✅ <?php echo htmlspecialchars($_SESSION['success_message']); ?></p>
+                    </div>
+                    <?php unset($_SESSION['success_message']); ?>
+                <?php endif; ?>
+
+                <!-- Comment Form -->
+                <div class="comment-form-container" style="margin-bottom: 40px;">
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <form action="/post_comment.php" method="POST" class="comment-form">
+                            <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($post_id); ?>">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <textarea name="content" class="form-control" placeholder="Share your thoughts..." style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; min-height: 100px; resize: vertical;" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Post Comment</button>
+                        </form>
+                    <?php else: ?>
+                        <div class="login-prompt" style="background: var(--clr-light-cyan); padding: 20px; border-radius: var(--radius-sm); text-align: center;">
+                            <p style="color: var(--clr-ocean); font-weight: 500; margin-bottom: 10px;">You must be logged in to post a comment.</p>
+                            <a href="/auth/login.php" class="btn btn-primary">Log In to Comment</a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Comments List -->
+                <div class="comments-list" style="display: flex; flex-direction: column; gap: 20px;">
+                    <?php if (empty($comments)): ?>
+                        <p style="color: var(--clr-text-light); font-style: italic;">No comments yet. Be the first to share your thoughts!</p>
+                    <?php else: ?>
+                        <?php foreach ($comments as $comment): ?>
+                            <div class="comment" style="background: #fbfbfb; padding: 20px; border-radius: var(--radius-sm); border-left: 3px solid var(--clr-aqua);">
+                                <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span style="font-weight: 600; color: var(--clr-navy);">👤 <?php echo htmlspecialchars($comment['author']); ?></span>
+                                    <span style="font-size: 0.85rem; color: var(--clr-text-light);"><?php echo date('M j, Y g:i A', strtotime($comment['created_at'])); ?></span>
+                                </div>
+                                <div class="comment-body" style="color: var(--clr-text); line-height: 1.6; margin-bottom: 10px;">
+                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                </div>
+                                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment['user_id']): ?>
+                                    <div class="comment-actions">
+                                        <form action="/delete_comment.php" method="POST" onsubmit="return confirm('Are you sure you want to delete your comment?');" style="margin: 0;">
+                                            <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>">
+                                            <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                                            <button type="submit" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem; color: #dc3545; border-color: transparent; background: transparent; cursor: pointer; text-decoration: underline;">Delete</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
             </div>
             
         </article>
