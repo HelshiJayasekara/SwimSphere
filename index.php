@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="hero-image-wrapper">
-                <img src="assets/images/placeholder.svg" alt="Swimmer underwater placeholder" class="hero-image">
+                <img src="/assets/images/placeholder.svg" alt="Swimmer underwater placeholder" class="hero-image">
             </div>
         </div>
     </section>
@@ -111,7 +111,7 @@
                     echo "
                     <article class='article-card'>
                         <div class='article-image'>
-                            <img src='assets/images/placeholder.svg' alt='{$article['title']} placeholder'>
+                            <img src='/assets/images/placeholder.svg' alt='{$article['title']} placeholder'>
                             <span class='article-badge'>{$article['category']}</span>
                         </div>
                         <div class='article-content'>
@@ -153,7 +153,7 @@
                 </div>
             </div>
             <div class="about-image-wrapper">
-                <img src="assets/images/placeholder.svg" alt="About SwimSphere placeholder" class="about-image">
+                <img src="/assets/images/placeholder.svg" alt="About SwimSphere placeholder" class="about-image">
             </div>
         </div>
     </section>
