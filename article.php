@@ -198,23 +198,47 @@ require_once 'includes/header.php';
                         <p style="color: var(--clr-text-light); font-style: italic;">No comments yet. Be the first to share your thoughts!</p>
                     <?php else: ?>
                         <?php foreach ($comments as $comment): ?>
-                            <div class="comment" style="background: #fbfbfb; padding: 20px; border-radius: var(--radius-sm); border-left: 3px solid var(--clr-aqua);">
+                            <div class="comment" id="comment-<?php echo $comment['id']; ?>" style="background: #fbfbfb; padding: 20px; border-radius: var(--radius-sm); border-left: 3px solid var(--clr-aqua);">
                                 <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                                     <span style="font-weight: 600; color: var(--clr-navy);">👤 <?php echo htmlspecialchars($comment['author']); ?></span>
                                     <span style="font-size: 0.85rem; color: var(--clr-text-light);"><?php echo date('M j, Y g:i A', strtotime($comment['created_at'])); ?></span>
                                 </div>
-                                <div class="comment-body" style="color: var(--clr-text); line-height: 1.6; margin-bottom: 10px;">
-                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                
+                                <!-- Normal View Mode -->
+                                <div class="comment-view-mode" id="comment-view-<?php echo $comment['id']; ?>">
+                                    <div class="comment-body" style="color: var(--clr-text); line-height: 1.6; margin-bottom: 10px;">
+                                        <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                    </div>
+                                    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment['user_id']): ?>
+                                        <div class="comment-actions" style="display: flex; gap: 10px;">
+                                            <button type="button" onclick="toggleEditComment(<?php echo $comment['id']; ?>)" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem; border-color: transparent; background: transparent; cursor: pointer; text-decoration: underline; color: var(--clr-ocean);">Edit</button>
+                                            
+                                            <form action="/delete_comment.php" method="POST" onsubmit="return confirm('Are you sure you want to delete your comment?');" style="margin: 0;">
+                                                <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>">
+                                                <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                                                <button type="submit" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem; color: #dc3545; border-color: transparent; background: transparent; cursor: pointer; text-decoration: underline;">Delete</button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
+                                
+                                <!-- Edit Mode (Hidden by default) -->
                                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment['user_id']): ?>
-                                    <div class="comment-actions">
-                                        <form action="/delete_comment.php" method="POST" onsubmit="return confirm('Are you sure you want to delete your comment?');" style="margin: 0;">
+                                    <div class="comment-edit-mode" id="comment-edit-<?php echo $comment['id']; ?>" style="display: none; margin-top: 10px;">
+                                        <form action="/edit_comment.php" method="POST" class="edit-comment-form">
                                             <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>">
                                             <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
-                                            <button type="submit" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem; color: #dc3545; border-color: transparent; background: transparent; cursor: pointer; text-decoration: underline;">Delete</button>
+                                            <div class="form-group" style="margin-bottom: 10px;">
+                                                <textarea name="content" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; min-height: 80px; resize: vertical;" required><?php echo htmlspecialchars($comment['content']); ?></textarea>
+                                            </div>
+                                            <div style="display: flex; gap: 10px;">
+                                                <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Save Changes</button>
+                                                <button type="button" onclick="toggleEditComment(<?php echo $comment['id']; ?>)" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.9rem;">Cancel</button>
+                                            </div>
                                         </form>
                                     </div>
                                 <?php endif; ?>
+                                
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>

@@ -133,3 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+// Function to toggle between viewing and editing a comment
+function toggleEditComment(commentId) {
+    const viewMode = document.getElementById('comment-view-' + commentId);
+    const editMode = document.getElementById('comment-edit-' + commentId);
+    
+    if (viewMode && editMode) {
+        if (viewMode.style.display === 'none') {
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+        } else {
+            viewMode.style.display = 'none';
+            editMode.style.display = 'block';
+        }
+    }
+}
