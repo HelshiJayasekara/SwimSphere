@@ -64,6 +64,13 @@ require_once 'includes/header.php';
                 <?php
                 // Fetch dynamic articles from database
                 try {
+                    $user_bookmarks = [];
+                    if (isset($_SESSION['user_id'])) {
+                        $stmt = $pdo->prepare("SELECT blog_post_id FROM bookmark WHERE user_id = ?");
+                        $stmt->execute([$_SESSION['user_id']]);
+                        $user_bookmarks = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                    }
+
                     $user_id_param = $_SESSION['user_id'] ?? 0;
                     $stmt = $pdo->prepare("
                         SELECT 
@@ -71,6 +78,7 @@ require_once 'includes/header.php';
                             b.title, 
                             b.content, 
                             b.created_at, 
+                            b.image_path,
                             u.username as author,
                             (SELECT COUNT(*) FROM article_like WHERE blog_post_id = b.id) as like_count,
                             (SELECT COUNT(*) FROM bookmark WHERE blog_post_id = b.id) as bookmark_count,
@@ -131,11 +139,17 @@ require_once 'includes/header.php';
                                 $bookmark_html = "<a href='/auth/login.php' class='btn btn-outline' style='padding: 6px 12px; font-size: 0.9rem;' title='Log in to bookmark' aria-label='Log in to bookmark'>🔖 {$bookmark_count}</a>";
                             }
 
+                            $has_bookmarked = in_array($id, $user_bookmarks);
+                            
+                            // Image logic
+                            $custom_image = $article['image_path'] ?? null;
                             $img_num = ($id % 3) + 1;
+                            $img_src = !empty($custom_image) ? htmlspecialchars($custom_image) : "/assets/images/swimming_{$img_num}.png";
+
                             echo "
                             <article class='article-card'>
                                 <div class='article-image'>
-                                    <img src='/assets/images/swimming_{$img_num}.png' alt='{$title} image'>
+                                    <img src='{$img_src}' alt='{$title} image' style='width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);'>
                                 </div>
                                 <div class='article-content'>
                                     <h3 class='article-title' style='margin-bottom: 10px;'>{$title}</h3>

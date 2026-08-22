@@ -236,6 +236,15 @@ img {
     gap: 24px;
 }
 
+@media (min-width: 1200px) {
+    .logo {
+        transform: translateX(max(-140px, calc(-1 * (100vw - var(--container-width)) / 2)));
+    }
+    .main-nav {
+        transform: translateX(min(90px, calc((100vw - var(--container-width)) / 2)));
+    }
+}
+
 .nav-link {
     color: var(--clr-text);
     font-weight: 500;
@@ -281,7 +290,7 @@ img {
     display: block;
     width: 25px;
     height: 3px;
-    background-color: var(--clr-navy);
+    background-color: var(--clr-aqua);
     position: relative;
     transition: var(--transition);
 }
@@ -292,7 +301,7 @@ img {
     position: absolute;
     width: 25px;
     height: 3px;
-    background-color: var(--clr-navy);
+    background-color: var(--clr-aqua);
     left: 0;
     transition: var(--transition);
 }
@@ -724,11 +733,13 @@ img {
         left: -100%;
         width: 100%;
         height: calc(100vh - 80px);
-        background-color: var(--clr-white);
+        background-color: rgba(11, 36, 53, 0.98);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         flex-direction: column;
-        padding: 40px 20px;
+        padding: 60px 20px 40px;
         transition: var(--transition);
-        box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     
     .main-nav.active {
@@ -738,15 +749,38 @@ img {
     .nav-list {
         flex-direction: column;
         text-align: center;
-        gap: 20px;
+        gap: 30px;
         width: 100%;
+    }
+    
+    .nav-list .nav-link {
+        font-size: 1.2rem;
+        display: inline-block;
+        padding: 5px 15px;
     }
     
     .auth-buttons {
         flex-direction: column;
         width: 100%;
-        max-width: 200px;
-        margin-top: 20px;
+        max-width: 250px;
+        margin: 40px auto 0;
+        padding-top: 30px;
+        border-top: 1px solid rgba(0, 194, 232, 0.15);
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .auth-buttons span {
+        margin-right: 0 !important;
+        margin-bottom: 5px;
+        color: var(--clr-text-light) !important;
+        font-size: 0.95rem;
+    }
+    
+    .auth-buttons .btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px !important;
     }
     
     .footer-container {
@@ -817,11 +851,14 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 0 15px rgba(22, 199, 232, 0.4);
 }
 .btn-outline {
-    border-color: rgba(255,255,255,0.2);
+    border-color: var(--clr-aqua);
     color: var(--clr-white);
+    border-width: 2px;
 }
 .btn-outline:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(0, 194, 232, 0.1);
+    border-color: var(--clr-light-cyan);
+    box-shadow: 0 0 10px rgba(0, 194, 232, 0.3);
 }
 
 /* Auth Pages & Dashboard Cards */
@@ -893,4 +930,39 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--clr-aqua) !important;
     color: var(--clr-navy) !important;
     box-shadow: 0 0 10px var(--cyan-glow);
+}
+
+/* Dashboard Box Borders and Interaction Effects */
+.profile-section,
+.resources-section,
+.activity-section,
+.post-card,
+.no-posts-state,
+.activity-section > div > div {
+    border: 2px solid var(--clr-aqua) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: pointer; /* Makes it feel clickable */
+}
+
+/* Pop up on hover */
+.profile-section:hover,
+.resources-section:hover,
+.activity-section:hover,
+.post-card:hover,
+.no-posts-state:hover,
+.activity-section > div > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 194, 232, 0.25) !important;
+    border-color: var(--clr-light-cyan) !important;
+}
+
+/* Pop effect on click */
+.profile-section:active,
+.resources-section:active,
+.activity-section:active,
+.post-card:active,
+.no-posts-state:active,
+.activity-section > div > div:active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 0 5px 15px rgba(0, 194, 232, 0.4) !important;
 }

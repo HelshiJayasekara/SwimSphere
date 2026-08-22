@@ -28,6 +28,11 @@ if (!$post_id) {
 require_once 'config/database.php';
 
 try {
+    // Fetch image path before deletion
+    $stmtImg = $pdo->prepare("SELECT image_path FROM blogPost WHERE id = :id AND user_id = :user_id");
+    $stmtImg->execute(['id' => $post_id, 'user_id' => $_SESSION['user_id']]);
+    $image_path = $stmtImg->fetchColumn();
+
     // 3. Delete the correct blogPost record.
     // 4. Make sure the logged-in user can delete ONLY their own posts.
     // By enforcing user_id = :user_id, we prevent deleting other users' posts.
@@ -39,6 +44,13 @@ try {
     
     // Check if a row was actually deleted
     if ($stmt->rowCount() > 0) {
+        // Delete the image file if it exists
+        if (!empty($image_path)) {
+            $file_to_delete = __DIR__ . $image_path;
+            if (file_exists($file_to_delete)) {
+                unlink($file_to_delete);
+            }
+        }
         $_SESSION['success_message'] = "Your post was successfully deleted.";
     } else {
         // Either the post didn't exist or didn't belong to the user

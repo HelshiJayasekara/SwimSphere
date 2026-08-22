@@ -18,7 +18,7 @@ if (!$post_id) {
 try {
     // Fetch the specific blog post and its author securely
     $stmt = $pdo->prepare("
-        SELECT b.id, b.title, b.content, b.created_at, u.username as author 
+        SELECT b.id, b.title, b.content, b.created_at, b.image_path, u.username as author 
         FROM blogPost b 
         JOIN user u ON b.user_id = u.id 
         WHERE b.id = :id
@@ -90,8 +90,12 @@ require_once 'includes/header.php';
         <article class="article-full" style="background: var(--clr-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); max-width: 900px; margin: 0 auto;">
             
             <div class="article-hero-image" style="width: 100%; height: 400px; background-color: var(--clr-ocean); display: flex; align-items: center; justify-content: center; position: relative;">
-                <?php $img_num = ($post_id % 3) + 1; ?>
-                <img src="/assets/images/swimming_<?php echo $img_num; ?>.png" alt="Cover Image" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+                <?php 
+                $custom_image = $article['image_path'] ?? null;
+                $img_num = ($post_id % 3) + 1; 
+                $img_src = !empty($custom_image) ? htmlspecialchars($custom_image) : "/assets/images/swimming_{$img_num}.png";
+                ?>
+                <img src="<?php echo $img_src; ?>" alt="Cover Image" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
                 <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,25,47,0.95), transparent);"></div>
                 
                 <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 50px;">
