@@ -1,4 +1,7 @@
 <?php
+// Secure session initialization
+require_once '../includes/session.php';
+
 // Include the database connection
 require_once '../config/database.php';
 
@@ -17,19 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Please enter both email and password.";
     } else {
         // 3. Database Lookup using prepared statements
-        // 3. Database Lookup using prepared statements
         $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM user WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
         // 4. Verify password
         if ($user && password_verify($password, $user['password'])) {
-            // Start the session (if not already started)
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
+            // Prevent session fixation
+            session_regenerate_id(true);
             
             // Store user data in session
+            $_SESSION['logged_in'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];

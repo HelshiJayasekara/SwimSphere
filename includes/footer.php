@@ -1,8 +1,11 @@
 <footer class="site-footer">
     <div class="container footer-container">
         <div class="footer-brand">
-            <a href="/" class="logo">
-                <span class="logo-icon">🌊</span> SwimSphere
+            <a href="/" class="logo" style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.5rem; text-decoration: none;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--clr-aqua)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12h4l3-9 5 14 3-9h5"></path>
+                </svg>
+                <span><span style="color: var(--clr-white);">Swim</span><span style="color: var(--clr-aqua);">Sphere</span></span>
             </a>
             <p class="footer-desc">Your ultimate guide to swimming techniques, training advice, and fitness tips. Dive in and become a better swimmer today.</p>
             <div class="social-links">
@@ -39,6 +42,8 @@
         </div>
     </div>
 </footer>
+
+
 
 <!-- Main JS -->
 <script src="/assets/js/main.js"></script>

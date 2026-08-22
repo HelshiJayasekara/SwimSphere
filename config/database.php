@@ -1,9 +1,16 @@
 <?php
-// Database configuration and connection setup
-$host = '127.0.0.1'; // Using 127.0.0.1 instead of 'localhost' to force TCP and avoid Mac XAMPP socket errors
-$dbname = 'swimsphere';
-$username = 'root';
-$password = ''; // Local XAMPP default has no password
+require_once __DIR__ . '/EnvLoader.php';
+
+// Load the env.ini file from the project root
+$envPath = dirname(__DIR__) . '/env.ini';
+$loader = new EnvLoader($envPath);
+$loader->load();
+
+// Database configuration from environment variables
+$host = $_ENV['DB_HOST'] ?? '127.0.0.1';
+$dbname = $_ENV['DB_DATABASE'] ?? 'swimsphere';
+$username = $_ENV['DB_USERNAME'] ?? 'root';
+$password = $_ENV['DB_PASSWORD'] ?? '';
 
 // Define the Data Source Name (DSN)
 $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";

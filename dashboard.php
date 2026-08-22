@@ -1,8 +1,6 @@
 <?php
-// Start the session to access user authentication data
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Secure session initialization
+require_once 'includes/session.php';
 
 // 1. Only authenticated users can access dashboard.php.
 // If a user who is NOT logged in attempts to access, redirect them to /auth/login.php.
