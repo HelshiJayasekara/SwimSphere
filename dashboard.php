@@ -24,7 +24,7 @@ if (empty($user_email)) {
 // ==========================================
 // FETCH USER'S POSTS for Activity and Blog Posts Feed
 // ==========================================
-$stmt = $pdo->prepare("SELECT id, title, content, created_at FROM blogPost WHERE user_id = :user_id ORDER BY created_at DESC");
+$stmt = $pdo->prepare("SELECT id, title, content, created_at, image_path FROM blogPost WHERE user_id = :user_id ORDER BY created_at DESC");
 $stmt->execute(['user_id' => $_SESSION['user_id']]);
 $posts = $stmt->fetchAll();
 
@@ -197,6 +197,14 @@ require_once 'includes/header.php';
                         <div class="posts-list" style="display: flex; flex-direction: column; gap: 20px;">
                             <?php foreach ($posts as $post): ?>
                                 <article class="post-card" style="background: var(--clr-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-left: 4px solid var(--clr-aqua);">
+                                    <?php 
+                                    $custom_image = $post['image_path'] ?? null;
+                                    $img_num = ($post['id'] % 3) + 1;
+                                    $img_src = !empty($custom_image) ? htmlspecialchars($custom_image) : "/assets/images/swimming_{$img_num}.png";
+                                    ?>
+                                    <div class="post-image" style="width: 100%; height: 150px; overflow: hidden; background: #071A2A;">
+                                        <img src="<?php echo $img_src; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+                                    </div>
                                     
                                     <div class="post-content" style="padding: 20px 25px;">
                                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">

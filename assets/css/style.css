@@ -854,11 +854,12 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--clr-aqua);
     color: var(--clr-white);
     border-width: 2px;
+    box-shadow: 0 0 8px rgba(0, 194, 232, 0.4);
 }
 .btn-outline:hover {
     background-color: rgba(0, 194, 232, 0.1);
     border-color: var(--clr-light-cyan);
-    box-shadow: 0 0 10px rgba(0, 194, 232, 0.3);
+    box-shadow: 0 0 15px rgba(0, 194, 232, 0.6);
 }
 
 /* Auth Pages & Dashboard Cards */
@@ -895,7 +896,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Fix article cards border color */
 .article-card, .post-card {
-    border-color: rgba(255,255,255,0.10) !important;
+    border-color: var(--clr-aqua) !important;
 }
 
 /* Post text content needs to be readable */

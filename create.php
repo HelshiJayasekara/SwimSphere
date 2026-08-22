@@ -41,11 +41,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 4. Handle Image Upload
     $image_path = null;
-    if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
-        $file = $_FILES['image'];
+    if (isset($_FILES['post_image']) && $_FILES['post_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $file = $_FILES['post_image'];
         
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            $errors[] = "Error uploading image.";
+            // Provide detailed debug information
+            $upload_errors = [
+                UPLOAD_ERR_INI_SIZE   => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+                UPLOAD_ERR_FORM_SIZE  => 'The uploaded file exceeds the MAX_FILE_SIZE directive in the HTML form.',
+                UPLOAD_ERR_PARTIAL    => 'The uploaded file was only partially uploaded.',
+                UPLOAD_ERR_NO_FILE    => 'No file was uploaded.',
+                UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder.',
+                UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+                UPLOAD_ERR_EXTENSION  => 'A PHP extension stopped the file upload.',
+            ];
+            $error_message = $upload_errors[$file['error']] ?? 'Unknown upload error.';
+            $errors[] = "Error uploading image: " . $error_message;
         } else {
             if ($file['size'] > 5 * 1024 * 1024) {
                 $errors[] = "Image size must be less than 5MB.";
@@ -63,16 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $errors[] = "Invalid image format. Only JPG, PNG, and WEBP are allowed.";
                 } else {
                     $new_filename = uniqid('post_', true) . '.' . $ext;
-                    $upload_dir = __DIR__ . '/uploads/articles/';
+                    $upload_dir = __DIR__ . '/uploads/posts/'; // Using /uploads/posts/
                     
                     if (!is_dir($upload_dir)) {
                         mkdir($upload_dir, 0755, true);
                     }
                     
                     if (move_uploaded_file($file['tmp_name'], $upload_dir . $new_filename)) {
-                        $image_path = '/uploads/articles/' . $new_filename;
+                        $image_path = '/uploads/posts/' . $new_filename;
                     } else {
-                        $errors[] = "Failed to save uploaded image.";
+                        $errors[] = "Failed to save uploaded image. Check directory permissions.";
                     }
                 }
             }
@@ -144,10 +155,10 @@ require_once 'includes/header.php';
                 <div class="form-group" style="margin-bottom: 25px;">
                     <label for="image" style="display: block; font-weight: 500; margin-bottom: 8px; color: #F5F7FA;">Post Image</label>
                     <div style="position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 15px; background: #071A2A; padding: 20px; border-radius: 12px; border: 1px solid rgba(8, 200, 245, 0.2);">
-                        <label for="image" style="display: inline-block; padding: 12px 24px; background: transparent; color: #F5F7FA; border: 1px solid #08C8F5; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; box-shadow: 0 0 10px rgba(8, 200, 245, 0.15); transition: all 0.3s ease; max-width: 200px;" onmouseover="this.style.boxShadow='0 0 15px rgba(8, 200, 245, 0.4)'" onmouseout="this.style.boxShadow='0 0 10px rgba(8, 200, 245, 0.15)'">
+                        <label for="post_image" style="display: inline-block; padding: 12px 24px; background: transparent; color: #F5F7FA; border: 1px solid #08C8F5; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; box-shadow: 0 0 10px rgba(8, 200, 245, 0.15); transition: all 0.3s ease; max-width: 200px;" onmouseover="this.style.boxShadow='0 0 15px rgba(8, 200, 245, 0.4)'" onmouseout="this.style.boxShadow='0 0 10px rgba(8, 200, 245, 0.15)'">
                             Choose Image
                         </label>
-                        <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png, .webp" style="display: none;" onchange="previewImage(this)">
+                        <input type="file" id="post_image" name="post_image" accept=".jpg, .jpeg, .png, .webp" style="display: none;" onchange="previewImage(this)">
                         <span id="file-name" style="color: #A8B8C8; font-size: 0.9rem;">No file chosen</span>
                         <div id="image-preview-container" style="display: none; position: relative; margin-top: 10px;">
                             <img id="image-preview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: cover; border: 1px solid #08C8F5;">

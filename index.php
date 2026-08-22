@@ -53,9 +53,9 @@ require_once 'includes/header.php';
     </section>
 
     <!-- LATEST ARTICLES SECTION -->
-    <section class="articles section-padding bg-light" id="articles">
+    <section class="articles section-padding bg-light" id="articles" style="padding-top: 40px;">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header" style="margin-bottom: 30px;">
                 <h2>Latest Articles</h2>
                 <p>Stay updated with our most recent tips and guides.</p>
             </div>

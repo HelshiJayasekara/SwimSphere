@@ -61,8 +61,13 @@ require_once '../includes/header.php';
 
             <!-- Display Error Message -->
             <?php if (!empty($error)): ?>
-                <div class="alert alert-danger" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
-                    <p style="margin: 0; font-weight: 500;">⚠️ <?php echo htmlspecialchars($error); ?></p>
+                <div class="alert alert-danger" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ff6b6b; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.05);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <p style="margin: 0; font-weight: 500; font-size: 0.95rem; line-height: 1.4;"><?php echo htmlspecialchars($error); ?></p>
                 </div>
             <?php endif; ?>
 

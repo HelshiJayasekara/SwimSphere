@@ -117,7 +117,7 @@ require_once 'includes/header.php';
                 ?>
             </div>
             
-            <div class="article-footer" style="padding: 30px 60px; background: #fbfbfb; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div class="article-footer" style="padding: 30px 60px; background: transparent; border-top: 1px solid rgba(255,255,255,0.10); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                 
                 <!-- Like & Bookmark Actions -->
                 <div class="article-actions" style="display: flex; gap: 15px; align-items: center;">
@@ -215,13 +215,13 @@ require_once 'includes/header.php';
                                         <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
                                     </div>
                                     <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment['user_id']): ?>
-                                        <div class="comment-actions" style="display: flex; gap: 10px;">
-                                            <button type="button" onclick="toggleEditComment(<?php echo $comment['id']; ?>)" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem; border-color: transparent; background: transparent; cursor: pointer; text-decoration: underline; color: var(--clr-ocean);">Edit</button>
+                                        <div class="comment-actions" style="display: flex; gap: 15px; margin-top: 5px;">
+                                            <button type="button" onclick="toggleEditComment(<?php echo $comment['id']; ?>)" style="padding: 0; font-size: 0.85rem; border: none; background: transparent; cursor: pointer; color: var(--clr-aqua); font-weight: 500; transition: color 0.3s ease;">Edit</button>
                                             
                                             <form action="/delete_comment.php" method="POST" onsubmit="return confirm('Are you sure you want to delete your comment?');" style="margin: 0;">
                                                 <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>">
                                                 <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
-                                                <button type="submit" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.8rem; color: #dc3545; border-color: transparent; background: transparent; cursor: pointer; text-decoration: underline;">Delete</button>
+                                                <button type="submit" style="padding: 0; font-size: 0.85rem; color: #dc3545; border: none; background: transparent; cursor: pointer; font-weight: 500; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Delete</button>
                                             </form>
                                         </div>
                                     <?php endif; ?>

@@ -31,7 +31,8 @@ require_once __DIR__ . '/session.php';
                 <li><a href="/" class="nav-link active">Home</a></li>
                 <li><a href="/#about" class="nav-link">About</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <li><a href="/dashboard.php" class="nav-link">Dashboard</a></li>
+                    <li><a href="/dashboard.php" class="nav-link">My Posts</a></li>
+                    <li><a href="/create.php" class="nav-link">Create Blog</a></li>
                     <li><a href="/dashboard.php#bookmarks" class="nav-link">Bookmarks</a></li>
                 <?php endif; ?>
             </ul>
